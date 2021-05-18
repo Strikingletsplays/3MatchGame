@@ -32,12 +32,13 @@ public class MovePieces : MonoBehaviour
             newIndex = Point.clone(moving.index);
             Point add = Point.zero;
 
+            //Move piece before flip
             if(dir.magnitude > 32) //make add either (1,0) | (-1,0) | (0,1) | (0,-1) depending ont he direction of the mouse point 
             {
                 if (aDir.x > aDir.y)
-                    add = (new Point((nDir.x > 0) ? 1 : -1, 0));
+                    add = (new Point((nDir.x > 0) ? 1 : -1, 0)); //Move piece on the x axis
                 else if (aDir.y > aDir.x)
-                    add = (new Point(0, (nDir.y > 0) ? -1 : 1));
+                    add = (new Point(0, (nDir.y > 0) ? -1 : 1)); // Move piece on the y axis
             } //if our mouse/swipe is 32 pixels away from the starting point of the mouse/swipe.
             newIndex.add(add); // This piece is moving!
 
@@ -57,8 +58,7 @@ public class MovePieces : MonoBehaviour
 
     public void DropPiece()
     {
-        if (moving == null) return;
-        Debug.Log("Dropped");
+        if (moving == null) return; //if no piece is moving return
         if (!newIndex.equals(moving.index))
             game.FlipPieces(moving.index, newIndex, true); //Flip the pieces around in the game board
         else

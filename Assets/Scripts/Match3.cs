@@ -31,8 +31,6 @@ public class Match3 : MonoBehaviour
         StartGame();
     }
 
-
-
     void Update()
     {
         List<NodePiece> finishedUpdating = new List<NodePiece>();
@@ -67,8 +65,8 @@ public class Match3 : MonoBehaviour
                 {
                     Node node = getNodeAtPoint(pnt);
                     NodePiece nodePiece = node.getPiece();
-                    if(piece != null)
-                        piece.gameObject.SetActive(false);
+                    if(nodePiece != null)
+                        nodePiece.gameObject.SetActive(false);
                     node.SetPiece(null);
                 } //Remove the node pieces connected
             }
@@ -143,6 +141,7 @@ public class Match3 : MonoBehaviour
             for (int y = 0; y < height; y++)
             {
                 Node node = getNodeAtPoint(new Point(x, y));
+
                 int val = node.value;
                 if (val <= 0) continue; //if value of board is 0 dont add any node
                 GameObject p = Instantiate(nodePiece, gameBoard);
@@ -159,23 +158,23 @@ public class Match3 : MonoBehaviour
     {
         piece.ResetPosition();
         update.Add(piece);
-    } //Reset possition
+    } //Reset moving piece possition
 
     public void FlipPieces(Point one, Point two, bool main)
     {
         if (getValueAtPoint(one) < 0) return; //if starting piece is a hole, return
 
-        Node nodeOne = getNodeAtPoint(one);
-        NodePiece pieceOne = nodeOne.getPiece();
+        Node nodeOne = getNodeAtPoint(one); //Get starting node of initiating flip
+        NodePiece pieceOne = nodeOne.getPiece(); //Get piece one!
 
-        if (getValueAtPoint(two) > 0)
+        if (getValueAtPoint(two) > 0) // Check Node two if it exists
         {
-            Node nodeTwo = getNodeAtPoint(two);
-            NodePiece pieceTwo = nodeTwo.getPiece();
-            nodeOne.SetPiece(pieceTwo);
-            nodeTwo.SetPiece(pieceOne);
+            Node nodeTwo = getNodeAtPoint(two); //Get Node two
+            NodePiece pieceTwo = nodeTwo.getPiece(); //Get piece two
+            nodeOne.SetPiece(pieceTwo); //Swap piece of nodeone
+            nodeTwo.SetPiece(pieceOne); //Swap piece of nodetwo
 
-            if(main)
+            if (main)
                 flipped.Add(new FlippedPieces(pieceOne, pieceTwo)); //Add fliped pieces to list flipped
 
             update.Add(pieceOne);
